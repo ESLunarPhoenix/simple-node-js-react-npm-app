@@ -18,15 +18,17 @@ pipeline {
                 sh './jenkins/scripts/kill.sh' 
             }
         }
-		steps {
-            echo "Generating Dependency Check"
-            dependencyCheck(additionalArguments: '--format XML --format HTML', odcInstallation: 'OWASP-Dependency-Check')
-            echo "Done"
+		stage('OWASP Dependency-Check Vulnerabilities') {
+            steps {
+				echo "Generating Dependency Check"
+				dependencyCheck(additionalArguments: '--format XML --format HTML', odcInstallation: 'OWASP-Dependency-Check')
+				echo "Done"
+			}
+			post {
+				always {
+					dependencyCheckPublisher(pattern: '**/dependency-check-report.xml')
+				}
+			}
         }
-        post {
-            always {
-                dependencyCheckPublisher(pattern: '**/dependency-check-report.xml')
-            }
-	}
     }
 }
