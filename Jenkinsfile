@@ -21,7 +21,7 @@ pipeline {
 		stage('OWASP Dependency-Check Vulnerabilities') {
             steps {
 				echo "Generating Dependency Check"
-				dependencyCheck(additionalArguments: '--format XML --format HTML', odcInstallation: 'OWASP-Dependency-Check')
+				dependencyCheck(additionalArguments: '--format XML --format HTML', odcInstallation: 'OWASP Dependency-Check Vulnerabilities')
 				echo "Done"
 			}
 			post {
@@ -31,4 +31,9 @@ pipeline {
 			}
         }
     }
+	post {
+		success {
+			dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+		}
+	}
 }
