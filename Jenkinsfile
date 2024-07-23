@@ -1,5 +1,8 @@
 pipeline {
     agent any
+	environment {
+		NVD_API_KEY = credentials('nvdapikey')
+	}
     stages {
         stage('Build') {
             steps {
